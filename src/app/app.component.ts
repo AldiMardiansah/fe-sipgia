@@ -1,12 +1,22 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone: true,
+  imports: [CommonModule, HttpClientModule],
+  templateUrl: './app.component.html'
 })
-export class AppComponent {
-  title = 'frontend-sipgia';
+export class AppComponent implements OnInit {
+  message: string = '';
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.http.get('http://127.0.0.1:8000/api/hello/')
+      .subscribe((res: any) => {
+        this.message = res.message;
+      });
+  }
 }
